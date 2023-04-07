@@ -1,19 +1,20 @@
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>delete form</title>
+    <title>Document</title>
 </head>
 <body>
 <?php
-include "LevCrud.php";
+include "artikelen.php"
 ?>
-<div class="">
-    <form action="levDelete2.php" method="post">
-        Welke Leverancier wilt u verwijderen?
-        <input type="text" name="levId"> <br />
+<div class="pageinfo">
+    <form action="artUpdate2.php" method="post">
+        Welke artikel wilt u wijzigen?
+        <input type="text" name="LevId"> <br />
         <input type="submit">
     </form>
 </div>

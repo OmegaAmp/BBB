@@ -1,17 +1,21 @@
 <?php
 include "LevCrud.php";
-include "Leverancier.php";
 
-$id =$_POST["id"];
-$verwijderen =$_POST["verwijder"];
+$levId = $_POST["levId"];
+$verwijderen = $_POST["verwijder"];
+
 if ($verwijderen) {
-    $leverancier->deleteLeverancier();
-    {
-        echo "De gegevens zijn verwijderen. <br />";
-    }
-else
-    {
-        echo "De gegevens zijn niet verwijderd. <br />";
+    $levCrud = new LevCrud('', '', '', '', '', '');
+    $leverancier = $levCrud->getLeverancierById($levId);
+
+    if ($leverancier) {
+        if ($levCrud->deleteLeverancier($levId)) {
+            echo "De gegevens zijn verwijderd. <br />";
+        } else {
+            echo "De gegevens zijn niet verwijderd. <br />";
+        }
+    } else {
+        echo "Leverancier niet gevonden. <br />";
     }
     echo "<a href=''>Terug naar het menu.</a>";
 }

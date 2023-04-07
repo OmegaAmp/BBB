@@ -2,6 +2,7 @@
 
 class Leverancier{
 
+    protected $levId;
     public $levNaam;
     public $levContact;
     public $levEmail;
@@ -9,7 +10,8 @@ class Leverancier{
     public $levPostcode;
     public $levWoonplaats;
 
-    function __construct($levNaam=NULL, $levContact=NULL, $levEmail=NULL, $levAdress=NULL, $levPostcode=NULL, $levWoonplaats=NULL ){
+
+    public function __construct($levNaam, $levContact, $levEmail, $levAdress, $levPostcode, $levWoonplaats){
         $this->levNaam=$levNaam;
         $this->levContact=$levContact;
         $this->levEmail=$levEmail;
@@ -19,6 +21,10 @@ class Leverancier{
     }
 
     // setters
+    function set_levId($levId)
+    {
+        $this->levId = $levId;
+    }
     function set_levNaam($levNaam){
         $this->levNaam=$levNaam;
     }
@@ -37,7 +43,10 @@ class Leverancier{
     function set_levWoonplaats($levWoonplaats){
         $this->levWoonplaats=$levWoonplaats;
     }
-    // getters
+
+    function get_levId(){
+        return $this->levId;
+    }
     function get_levNaam(){
         return $this->levNaam;
     }

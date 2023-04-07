@@ -12,7 +12,7 @@ class artikelen{
     public $artLocatie;
     private $levId;
 
-    function __construct($artNaam=NULL, $artOmschrijving=NULL, $artInkoop=NULL, $artVerkoop=NULL, $artVoorraad=NULL, $artMinVoorraad=NULL, $artMaxVoorraad=NULL, $artLocatie=NULL, $levId=NULL ){
+    public function __construct($artNaam, $artOmschrijving, $artInkoop, $artVerkoop, $artVoorraad, $artMinVoorraad, $artMaxVoorraad, $artLocatie, $levId ){
         $this->artNaam=$artNaam;
         $this->artOmschrijving=$artOmschrijving;
         $this->artInkoop=$artInkoop;

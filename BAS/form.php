@@ -24,18 +24,18 @@ try {
         FILTER_SANITIZE_STRING);
         $levPostcode = filter_input(INPUT_POST, "levPostcode",
         FILTER_SANITIZE_STRING);
-        $levWoonplaats = filter_input(INPUT_POST, "levWoonplaats",
+        $levWoonplaats = filter_input(INPUT_POST, "artMinVoorraad",
          FILTER_SANITIZE_STRING);
 
 
 
-    $query = $db->prepare("INSERT INTO leveranciers (levNaam, levContact, levEmail, levAdress, levPostcode, levWoonplaats) VALUES (:levNaam, :levContact, :levEmail, :levAdress, :levPostcode, :levWoonplaats");
+    $query = $db->prepare("INSERT INTO leveranciers (levNaam, levContact, levEmail, levAdress, levPostcode, artMinVoorraad) VALUES (:levNaam, :levContact, :levEmail, :levAdress, :levPostcode, :artMinVoorraad");
     $query->bindParam("levNaam", $levNaam);
     $query->bindParam("levContact", $levContact);
     $query->bindParam("levEmail", $levEmail);
     $query->bindParam("levAdress", $levAdress);
     $query->bindParam("levPostcode", $levPostcode);
-    $query->bindParam("levWoonplaats", $levWoonplaats);
+    $query->bindParam("artMinVoorraad", $levWoonplaats);
     if($query->execute()) {
         echo "De nieuwe gegevens zijn opgetreden!";
     } else {

@@ -8,9 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<?php
-    include "LevCrud.php"
-?>
 <div class="pageinfo">
     <form action="levUpdate2.php" method="post">
         Welke Leverancier wilt u wijzigen?

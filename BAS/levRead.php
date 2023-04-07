@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +11,8 @@
 require "Leverancier.php";
 require "LevCrud.php";
 
-$leveranciers = new levCrud();
-$leveranciers->readLeverancier();
+$leverancier = new LevCrud('', '', '', '', '', '');
+$leverancier->readLeverancier();
 
 ?>
 </body>

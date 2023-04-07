@@ -1,12 +1,12 @@
 <?php
-
+require "basDb.php";
+require "basDbCon.php";
 class artCrud extends artikelen{
 
     public function createArtikelen(){
-        require "basDb.php";
-        require "basDbCon.php";
 
-        $artId = NULL;
+
+        $conn = getConnection();
         $artNaam = $this->get_artNaam();
         $artOmschrijving = $this->get_artOmschrijving();
         $artInkoop = $this->get_artInkoop();
@@ -17,10 +17,12 @@ class artCrud extends artikelen{
         $artLocatie = $this->get_artLocatie();
         $levId = $this->get_levId();
 
+        if(empty($artNaam) || empty($artOmschrijving) || empty($artInkoop) || empty($artVerkoop) || empty($artVoorraad)|| empty($artMinVoorraad)|| empty($artMaxVoorraad)|| empty($artLocatie)) {
+            echo "Please fill in all required fields.";
+            return;
+        }
+        $sql = $conn->Prepare("insert into artikelen (artNaam, artOmschrijving, artInkoop, artVerkoop, artVoorraad, artMinVoorraad, artMaxVoorraad, artLocatie, levId) values ( :artNaam, :artOmschrijving, :artInkoop, :artVerkoop, :artVoorraad, :artMinVoorraad, :artMaxVoorraad, :artLocatie, :levId)");
 
-        $sql = $conn->Prepare("insert into artikelen values ( :artId, :artNaam, :artOmschrijving, :artInkoop, :artInkoop, :artVerkoop, :artVoorraad, :artMinVoorraad, :artMaxVoorraad, :artLocatie, :levId)");
-
-        $sql->bindParam(":artId",$artId);
         $sql->bindParam(":artNaam",$artNaam);
         $sql->bindParam(":artOmschrijving",$artOmschrijving);
         $sql->bindParam(":artInkoop",$artInkoop);
@@ -30,47 +32,60 @@ class artCrud extends artikelen{
         $sql->bindParam(":artMaxVoorraad",$artMaxVoorraad);
         $sql->bindParam(":artLocatie",$artLocatie);
         $sql->bindParam(":levId",$levId);
-        $sql->execute();
 
-        echo "Het artikel is toegevoegd: </br>";
+        try {
+            $sql->execute();
+            echo "Het artikel is toegevoegd. </br>";
+        } catch(PDOException $e) {
+            echo "Error creating artikel: " . $e->getMessage();
+        }
     }
+
     public function readArtikelen(){
         require "basDbCon.php";
+        $conn = getConnection();
 
         $sql = $conn->prepare(" SELECT * FROM artikelen");
         $sql->execute();
         foreach ($sql as $artikelen){
-            echo $artikelen ["artId"]. " - ";
-            echo $this->artNaam=$artikelen["artNaam"]. " - ";
-            echo $this->artOmschrijving=$artikelen["artOmschrijving"]. " - ";
-            echo $this->artInkoop=$artikelen["artInkoop"]. " - ";
-            echo $this->artVerkoop=$artikelen["artVerkoop"]. " - ";
-            echo $this->artVoorraad=$artikelen["artVoorraad"]. " - ";
+            echo $artikelen ["artId"]. "<br>";
+            echo $this->artNaam=$artikelen["artNaam"]. "<br>";
+            echo $this->artOmschrijving=$artikelen["artOmschrijving"]. "<br>";
+            echo $this->artInkoop=$artikelen["artInkoop"]. "<br>";
+            echo $this->artVerkoop=$artikelen["artVerkoop"]. "<br> ";
+            echo $this->artVoorraad=$artikelen["artVoorraad"]. "<br>";
             echo $this->artMinVoorraad=$artikelen["artMinVoorraad"]. " <br> ";
             echo $this->artMaxVoorraad=$artikelen["artMaxVoorraad"]. " <br> ";
             echo $this->artLocatie=$artikelen["artLocatie"]. " <br> ";
-            echo $this->levId=$artikelen["levId"]. " <br> ";
+            echo $this->levId=$artikelen["levId"]. " <br><br> ";
         }
     }
+
     public function deleteLeverancier()
     {}
-    public function searchLeverancier($artId){
-        require "basDbCon.php";
-        $sql = $conn->prepare("select * from artikelen where artId = :artId");
-        $sql->bindParam("artId", $artId);
-        $sql->execute();
 
-        foreach($sql as $artikelen){
-            echo $artikelen["artId"];
-            echo $this->artNaam=$artikelen["artNaam"];
-            echo $this->artOmschrijving=$artikelen["artOmschrijving"];
-            echo $this ->artInkoop=$artikelen["artInkoop"];
-            echo $this ->artVerkoop=$artikelen["artVerkoop"];
-            echo $this ->artVoorraad=$artikelen["artVoorraad"];
-            echo $this ->artMinVoorraad=$artikelen["artMinVoorraad"];
-            echo $this ->artMaxVoorraad=$artikelen["artMaxVoorraad"];
-            echo $this ->artLocatie=$artikelen["artLocatie"];
-            echo $this ->levId=$artikelen["levId"];
+    public function searchArtikelen($artId){
+        $conn = getConnection();
+        $sql = $conn->prepare("select * from artikelen where artId = :artId");
+        $sql->execute([':artId' => $artId]);
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return false;
         }
+        $artikelen = new artikelen(
+            $result['artNaam'],
+            $result['artOmschrijving'],
+            $result['artInkoop'],
+            $result['artVerkoop'],
+            $result['artVoorraad'],
+            $result['artMinVoorraad'],
+            $result['artMaxVoorraad'],
+            $result['artLocatie'],
+            $result['levId']
+        );
+        $artikelen->set_levId($result['levId']);
+        return $artikelen;
     }
+
 }
